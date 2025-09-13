@@ -41,7 +41,7 @@ export async function create(
   current: JwtUser,
   data: CreateBodyT,
 ) {
-  await ensureMagazineOwnerOrAdmin(app, magId, current);
+  // await ensureMagazineOwnerOrAdmin(app, magId, current);
 
   const publishedAt = data.status === 'PUBLISHED' ? new Date() : null;
 
@@ -65,8 +65,7 @@ export async function update(
 ) {
   const a = await repo.findArticleWithMagazine(app.prisma, id);
   if (!a) throw new Error('NOT_FOUND');
-  if (current.role !== 'ADMIN' && a.magazine.publisherId !== current.id)
-    throw new Error('FORBIDDEN');
+  if (current.role !== 'ADMIN') throw new Error('FORBIDDEN');
 
   let publishedAt = a.publishedAt ?? null;
   if (data.status === 'PUBLISHED' && a.status !== 'PUBLISHED') publishedAt = new Date();
@@ -98,7 +97,6 @@ export async function getForRead(app: FastifyInstance, id: string, current?: Jwt
     ) {
       throw new Error('FORBIDDEN');
     }
-    // مالك يرى كامل المحتوى
     return {
       article: {
         id: a.id,

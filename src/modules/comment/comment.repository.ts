@@ -8,7 +8,7 @@ export function listByArticle(
 ) {
   return prisma.comment.findMany({
     where: { articleId },
-    orderBy: { createdAt: 'asc' },
+    orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
     skip: (page - 1) * pageSize,
     take: pageSize,
     select: {

@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  PUBLISHER
+  SUBSCRIBER
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum ArticleStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  EXPIRED
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  name         String?
+  passwordHash String
+  role         Role       @default(SUBSCRIBER)
+  status       UserStatus @default(ACTIVE)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  // العلاقات
+  magazines     Magazine[]     @relation("PublisherMagazines") // كمُنشِر
+  articles      Article[] // كمؤلف
+  subscriptions Subscription[] // كمشترك
+  comments      Comment[] // ككاتب تعليق
+}
+
+model Magazine {
+  id          String  @id @default(cuid())
+  title       String
+  description String?
+  coverUrl    String?
+
+  // FK -> User (publisher)
+  publisherId String
+  publisher   User   @relation("PublisherMagazines", fields: [publisherId], references: [id])
+
+  // علاقات 1..N
+  articles      Article[]
+  subscriptions Subscription[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // اختياري: منع تكرار اسم مجلة لنفس الناشر
+  @@unique([publisherId, title])
+  @@index([publisherId])
+}
+
+model Article {
+  id      String        @id @default(cuid())
+  title   String
+  summary String?
+  content String
+  status  ArticleStatus @default(PUBLISHED)
+
+  magazineId String
+  magazine   Magazine @relation(fields: [magazineId], references: [id], onDelete: Cascade)
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id]) // منع حذف الكاتب إن لديه مقالات (RESTRICT الافتراضي)
+
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  comments Comment[]
+
+  @@index([magazineId])
+  @@index([authorId])
+  @@index([status])
+}
+
+model Subscription {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  magazineId String
+  magazine   Magazine @relation(fields: [magazineId], references: [id], onDelete: Cascade)
+
+  startAt DateTime           @default(now())
+  endAt   DateTime?
+  status  SubscriptionStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([magazineId])
+  @@index([status])
+}
+
+model Comment {
+  id   String @id @default(cuid())
+  body String
+
+  articleId String
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([articleId])
+  @@index([userId])
+}

@@ -39,7 +39,6 @@ npm run dev
 
  ملاحظات
 
-نوع قاعدة البيانات هنا NoSQL (MongoDB) عبر Prisma.
 
 إذا أردت التحويل لـ SQL (Postgres أو SQLite) يكفي تعديل provider في prisma/schema.prisma + تغيير DATABASE_URL.
 

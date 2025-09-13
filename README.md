@@ -1,0 +1,44 @@
+Backend — Digital Magazines (Fastify + TypeScript)
+
+الجزء الخلفي من المنصّة مبني على:
+
+Fastify (خادم HTTP سريع)
+
+TypeScript
+
+Prisma ORM
+
+قاعدة بيانات NoSQL (MongoDB) (يمكن استبدالها بـ Postgres/SQLite لكن هنا نذكر NoSQL)
+
+1) تثبيت المكاتب
+
+ادخل إلى مجلد الباك:
+npm install
+
+توليد Prisma Client
+
+عمل Seed (إضافة بيانات أولية)
+npx tsx prisma/seed.ts
+
+سيتم إنشاء حسابات جاهزة:
+
+Admin → admin@example.com / Admin@123
+
+Publisher → publisher@example.com / Publisher@123
+
+Subscriber → subscriber@example.com / Subscriber@123
+
+تشغيل المشروع
+npm run dev
+
+الخادم يعمل على:
+👉 http://localhost:3001/api
+
+
+ ملاحظات
+
+نوع قاعدة البيانات هنا NoSQL (MongoDB) عبر Prisma.
+
+إذا أردت التحويل لـ SQL (Postgres أو SQLite) يكفي تعديل provider في prisma/schema.prisma + تغيير DATABASE_URL.
+
+seed.ts يحتوي أمثلة لمستخدمين ومجلات والكثير من داتا للانطلاق.

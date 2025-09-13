@@ -16,6 +16,8 @@ Prisma ORM
 npm install
 
 توليد Prisma Client
+npx prisma generate
+
 
 عمل Seed (إضافة بيانات أولية)
 npx tsx prisma/seed.ts

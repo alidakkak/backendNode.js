@@ -16,6 +16,7 @@ Prisma ORM
 npm install
 
 توليد Prisma Client
+
 npx prisma generate
 
 

@@ -8,7 +8,7 @@ TypeScript
 
 Prisma ORM
 
-قاعدة بيانات NoSQL  (يمكن استبدالها بـ Postgres/SQLite لكن هنا نذكر NoSQL)
+قاعدة بيانات sqlite  (يمكن استبدالها بـسهولة)
 
 1) تثبيت المكاتب
 

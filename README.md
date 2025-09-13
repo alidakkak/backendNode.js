@@ -40,6 +40,6 @@ npm run dev
  ملاحظات
 
 
-إذا أردت التحويل لـ SQL (Postgres أو SQLite) يكفي تعديل provider في prisma/schema.prisma + تغيير DATABASE_URL.
+إذا أردت التحويل لـ SQL (Postgres) يكفي تعديل provider في prisma/schema.prisma + تغيير DATABASE_URL.
 
 seed.ts يحتوي أمثلة لمستخدمين ومجلات والكثير من داتا للانطلاق.

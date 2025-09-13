@@ -2,7 +2,7 @@ Backend — Digital Magazines (Fastify + TypeScript)
 
 الجزء الخلفي من المنصّة مبني على:
 
-Fastify (خادم HTTP سريع)
+Fastify 
 
 TypeScript
 
